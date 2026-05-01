@@ -571,7 +571,7 @@ if(form){
       .then(function(res){ return res.json(); })
       .then(function(data){
         if(data.status === 'duplicate'){
-          alert('⚠️ Yeh Phone Number ya Email already registered hai!');
+          alert('⚠️ Phone Number or Email is already registered!');
           btn.textContent = 'CLAIM YOUR THRONE →';
           btn.disabled = false;
         } else {
