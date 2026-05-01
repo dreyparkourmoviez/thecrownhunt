@@ -542,41 +542,51 @@
   <p>© 2026 THE CROWN HUNT &nbsp;|&nbsp; DREYPARKOUR MOVIEZ &nbsp;|&nbsp; CLAIM YOUR THRONE</p>
 </footer>
 <script>
-var form = document.getElementById('crownForm');
-if(form) {
-  form.addEventListener('submit', function(e) {
-    e.preventDefault();
-    var data = {
-      firstName: form.firstName.value,
-      lastName: form.lastName.value,
-      age: form.age.value,
-      gender: form.gender.value,
-      phone: form.phone.value,
-      email: form.email.value,
-      city: form.city.value,
-      reason: form.reason.value
-    };
-    // Use FormData for Apps Script compatibility
-    var formData = new FormData();
-    formData.append('firstName', data.firstName);
-    formData.append('lastName', data.lastName);
-    formData.append('age', data.age);
-    formData.append('gender', data.gender);
-    formData.append('phone', data.phone);
-    formData.append('email', data.email);
-    formData.append('city', data.city);
-    formData.append('reason', data.reason);
+var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxQwrG3fWsiE1IZpdaBhQ-IPNp5Hr4i62bDFjnNmaCmrn8F5UHPeyyiKesdi8odImEreQ/exec';
 
-    fetch('https://script.google.com/macros/s/AKfycbxCqf4cqL1hflXTOxKs10nJk5bVhij73eTCLJ3Cg9WQ-dFWiB-rHopRCGVon1rHcpCfww/exec', {
-      method: 'POST',
-      mode: 'no-cors',
-      body: formData
-    }).then(function() {
-      form.style.display = 'none';
-      document.getElementById('successMsg').style.display = 'block';
-    }).catch(function() {
-      alert('Something went wrong. Please try again!');
-    });
+fetch(SCRIPT_URL)
+  .then(function(res){ return res.json(); })
+  .then(function(data){ document.getElementById('liveCounter').textContent = data.count; })
+  .catch(function(){ document.getElementById('liveCounter').textContent = '18+'; });
+
+var form = document.getElementById('crownForm');
+if(form){
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var btn = form.querySelector('.form-submit');
+    btn.textContent = 'Checking...';
+    btn.disabled = true;
+
+    var formData = new FormData();
+    formData.append('firstName', form.firstName.value);
+    formData.append('lastName', form.lastName.value);
+    formData.append('age', form.age.value);
+    formData.append('gender', form.gender.value);
+    formData.append('phone', form.phone.value);
+    formData.append('email', form.email.value);
+    formData.append('city', form.city.value);
+    formData.append('reason', form.reason.value);
+
+    fetch(SCRIPT_URL, { method:'POST', body:formData })
+      .then(function(res){ return res.json(); })
+      .then(function(data){
+        if(data.status === 'duplicate'){
+          alert('⚠️ Yeh Phone Number ya Email already registered hai!');
+          btn.textContent = 'CLAIM YOUR THRONE →';
+          btn.disabled = false;
+        } else {
+          var el = document.getElementById('liveCounter');
+          var current = parseInt(el.textContent) || 18;
+          el.textContent = current + 1;
+          form.style.display = 'none';
+          document.getElementById('successMsg').style.display = 'block';
+        }
+      })
+      .catch(function(){
+        alert('Something went wrong. Please try again!');
+        btn.textContent = 'CLAIM YOUR THRONE →';
+        btn.disabled = false;
+      });
   });
 }
 </script>
