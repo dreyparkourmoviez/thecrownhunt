@@ -664,13 +664,14 @@ if(form){
 }
 </script>
   <!-- Portal Animation -->
-<div id="portalOverlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; z-index:99999; pointer-events:none;">
-  <canvas id="portalCanvas" style="width:100%; height:100%;"></canvas>
+<div id="portalOverlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; z-index:99999;">
+  <canvas id="portalCanvas" style="position:absolute; top:0; left:0; width:100%; height:100%;"></canvas>
 </div>
 
 <script>
 document.getElementById('registerPortalBtn').addEventListener('click', function(e){
   e.preventDefault();
+
   var overlay = document.getElementById('portalOverlay');
   var canvas = document.getElementById('portalCanvas');
   var ctx = canvas.getContext('2d');
@@ -680,70 +681,83 @@ document.getElementById('registerPortalBtn').addEventListener('click', function(
 
   var cx = canvas.width / 2;
   var cy = canvas.height / 2;
-  var radius = 0;
-  var maxRadius = Math.sqrt(cx*cx + cy*cy) * 1.5;
-  var particles = [];
-
-  for(var i = 0; i < 80; i++){
-    var angle = Math.random() * Math.PI * 2;
-    var speed = Math.random() * 6 + 2;
-    particles.push({
-      x: cx, y: cy,
-      vx: Math.cos(angle) * speed,
-      vy: Math.sin(angle) * speed,
-      alpha: 1,
-      size: Math.random() * 4 + 1,
-      color: Math.random() > 0.5 ? '#F8E48A' : '#C8960C'
-    });
-  }
-
   var start = null;
-  var duration = 1000;
+  var totalDuration = 1800;
 
   function animate(ts){
     if(!start) start = ts;
-    var progress = (ts - start) / duration;
+    var progress = (ts - start) / totalDuration;
+    if(progress > 1) progress = 1;
+
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Dark overlay expanding
-    radius = maxRadius * Math.min(progress * 1.5, 1);
-    ctx.save();
-    ctx.beginPath();
-    ctx.arc(cx, cy, radius, 0, Math.PI * 2);
-    ctx.fillStyle = 'rgba(6, 14, 28, ' + Math.min(progress * 2, 0.95) + ')';
-    ctx.fill();
-    ctx.restore();
+    // Dark background
+    ctx.fillStyle = 'rgba(0,0,0,' + Math.min(progress * 3, 0.97) + ')';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // Gold ring
-    ctx.save();
-    ctx.beginPath();
-    ctx.arc(cx, cy, radius, 0, Math.PI * 2);
-    ctx.strokeStyle = 'rgba(200, 150, 12, ' + Math.max(1 - progress * 2, 0) + ')';
-    ctx.lineWidth = 6;
-    ctx.stroke();
-    ctx.restore();
+    if(progress < 0.7){
+      var p = progress / 0.7;
 
-    // Particles
-    particles.forEach(function(p){
-      p.x += p.vx;
-      p.y += p.vy;
-      p.alpha -= 0.015;
-      ctx.save();
-      ctx.globalAlpha = Math.max(p.alpha, 0);
-      ctx.fillStyle = p.color;
+      // Vortex swirl layers
+      for(var layer = 0; layer < 6; layer++){
+        var rings = 8 - layer;
+        for(var i = 0; i < rings; i++){
+          var angle = (i / rings) * Math.PI * 2 + (ts * 0.003 * (layer % 2 === 0 ? 1 : -1)) + layer;
+          var r = (60 + layer * 35) * p;
+          var x = cx + Math.cos(angle) * r * (1 - p * 0.3);
+          var y = cy + Math.sin(angle) * r * (1 - p * 0.3);
+          var alpha = (1 - layer / 6) * p;
+          var colors = ['#F8E48A','#C8960C','#FFD700','#B8860B','#DAA520','#FFC200'];
+          ctx.beginPath();
+          ctx.arc(x, y, (4 - layer * 0.4) * p, 0, Math.PI * 2);
+          ctx.fillStyle = colors[layer];
+          ctx.globalAlpha = alpha;
+          ctx.fill();
+        }
+      }
+
+      // Spinning rings
+      ctx.globalAlpha = p * 0.9;
+      for(var r = 1; r <= 4; r++){
+        ctx.beginPath();
+        ctx.arc(cx, cy, r * 40 * p, 0, Math.PI * 2);
+        ctx.strokeStyle = r % 2 === 0 ? '#F8E48A' : '#C8960C';
+        ctx.lineWidth = 2;
+        ctx.setLineDash([10, 8]);
+        ctx.lineDashOffset = -(ts * 0.1 * r);
+        ctx.stroke();
+        ctx.setLineDash([]);
+      }
+
+      // Black hole center
+      var gradient = ctx.createRadialGradient(cx, cy, 0, cx, cy, 80 * p);
+      gradient.addColorStop(0, 'rgba(0,0,0,1)');
+      gradient.addColorStop(0.5, 'rgba(0,0,0,0.8)');
+      gradient.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.globalAlpha = 1;
       ctx.beginPath();
-      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      ctx.arc(cx, cy, 80 * p, 0, Math.PI * 2);
+      ctx.fillStyle = gradient;
       ctx.fill();
-      ctx.restore();
-    });
+
+    } else {
+      // Full black — teleport
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = '#000000';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
 
     if(progress < 1){
       requestAnimationFrame(animate);
     } else {
+      // Instant teleport
       overlay.style.display = 'none';
-      document.getElementById('register').scrollIntoView({ behavior: 'smooth' });
+      ctx.globalAlpha = 1;
+      var reg = document.getElementById('register');
+      reg.scrollIntoView({ behavior: 'instant' });
     }
   }
+
   requestAnimationFrame(animate);
 });
 </script>
