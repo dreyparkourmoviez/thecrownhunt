@@ -663,178 +663,170 @@ if(form){
   });
 }
 </script>
-  <!-- Portal Animation -->
-<div id="portalOverlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; z-index:99999; background:transparent;">
+<!-- Portal Overlay -->
+<div id="portalOverlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; z-index:99999; background:#000; overflow:hidden;">
   <canvas id="portalCanvas" style="position:absolute; top:0; left:0; width:100%; height:100%;"></canvas>
+  <div id="portalWindow" style="
+    position:absolute;
+    border-radius:50%;
+    overflow:hidden;
+    transform:translate(-50%,-50%);
+    left:50%; top:50%;
+    width:0px; height:0px;
+    box-shadow: 0 0 0 4px #C8960C, 0 0 30px 8px #F8E48A, 0 0 80px 20px rgba(200,150,12,0.5);
+    transition: none;
+    z-index:2;
+  ">
+    <iframe id="portalIframe" src="#register" style="
+      width:400px; height:700px;
+      margin-left:-200px; margin-top:-350px;
+      position:absolute; left:50%; top:50%;
+      border:none; pointer-events:none;
+      transform:scale(0.85);
+      transform-origin:center center;
+    " scrolling="no"></iframe>
+  </div>
 </div>
 
 <script>
-document.getElementById('registerPortalBtn').addEventListener('click', function(e){
-  e.preventDefault();
+(function(){
+  var btn = document.getElementById('registerPortalBtn');
+  if(!btn) return;
 
-  var overlay = document.getElementById('portalOverlay');
-  var canvas = document.getElementById('portalCanvas');
-  var ctx = canvas.getContext('2d');
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-  overlay.style.display = 'block';
-  overlay.style.pointerEvents = 'all';
+  btn.addEventListener('click', function(e){
+    e.preventDefault();
 
-  var cx = canvas.width / 2;
-  var cy = canvas.height / 2;
-  var start = null;
-  var totalDuration = 2200;
-  var rotation = 0;
+    var overlay = document.getElementById('portalOverlay');
+    var canvas = document.getElementById('portalCanvas');
+    var portalWin = document.getElementById('portalWindow');
+    var ctx = canvas.getContext('2d');
 
-  // Capture register section as backdrop
-  var regSection = document.getElementById('register');
-  var regTop = regSection.getBoundingClientRect().top + window.scrollY;
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    overlay.style.display = 'block';
 
-  function easeInOut(t){ return t < 0.5 ? 2*t*t : -1+(4-2*t)*t; }
+    // Load register section content inside iframe
+    var iframe = document.getElementById('portalIframe');
+    iframe.src = window.location.href.split('#')[0] + '#register';
 
-  function drawPortal(cx, cy, portalR, alpha, rot, showInner, innerAlpha){
-    ctx.save();
+    var cx = canvas.width / 2;
+    var cy = canvas.height / 2;
+    var targetSize = Math.min(canvas.width, canvas.height) * 0.78;
+    var startTime = null;
+    var phase1 = 1400; // portal opening
+    var phase2 = 700;  // hold
+    var phase3 = 500;  // warp in
+    var total = phase1 + phase2 + phase3;
 
-    // Outer dark background vignette
-    var bgGrad = ctx.createRadialGradient(cx, cy, portalR * 0.5, cx, cy, canvas.width);
-    bgGrad.addColorStop(0, 'rgba(0,0,0,0)');
-    bgGrad.addColorStop(1, 'rgba(0,0,0,' + (alpha * 0.85) + ')');
-    ctx.fillStyle = bgGrad;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    // Spark particles
+    var sparks = [];
+    for(var i = 0; i < 120; i++){
+      var a = Math.random() * Math.PI * 2;
+      var spd = Math.random() * 3 + 1;
+      sparks.push({
+        angle: a, spd: spd,
+        orbitR: targetSize/2 * (0.85 + Math.random()*0.3),
+        size: Math.random()*2.5+0.5,
+        color: Math.random()>0.4?'#F8E48A':'#FF9800',
+        offset: Math.random()*Math.PI*2,
+        life: Math.random()
+      });
+    }
 
-    // Portal inner — dark wormhole
-    var innerGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, portalR * 0.88);
-    innerGrad.addColorStop(0,   'rgba(2, 5, 15, ' + alpha + ')');
-    innerGrad.addColorStop(0.4, 'rgba(10, 20, 50, ' + alpha + ')');
-    innerGrad.addColorStop(0.75,'rgba(30, 15, 5, ' + alpha + ')');
-    innerGrad.addColorStop(1,   'rgba(0,0,0,0)');
-    ctx.beginPath();
-    ctx.arc(cx, cy, portalR * 0.88, 0, Math.PI * 2);
-    ctx.fillStyle = innerGrad;
-    ctx.fill();
+    function easeOutCubic(t){ return 1 - Math.pow(1-t, 3); }
+    function easeInCubic(t){ return t*t*t; }
 
-    // Fire rings — multiple layers rotating
-    var ringColors = [
-      {r: portalR, w: 18, c1: 'rgba(255,200,50,', c2: 'rgba(200,100,10,', speed: 1},
-      {r: portalR * 0.92, w: 10, c1: 'rgba(255,160,20,', c2: 'rgba(180,80,5,',  speed: -1.5},
-      {r: portalR * 0.82, w: 7,  c1: 'rgba(255,220,80,', c2: 'rgba(220,140,20,',speed: 2},
-      {r: portalR * 1.06, w: 5,  c1: 'rgba(200,150,12,', c2: 'rgba(100,60,5,',  speed: -0.8},
-    ];
+    function draw(ts){
+      if(!startTime) startTime = ts;
+      var elapsed = ts - startTime;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    ringColors.forEach(function(ring, idx){
-      for(var i = 0; i < 60; i++){
-        var a = (i/60) * Math.PI * 2 + rot * ring.speed;
-        var flicker = 0.7 + Math.sin(a * 7 + rot * 3) * 0.3;
-        var x = cx + Math.cos(a) * ring.r;
-        var y = cy + Math.sin(a) * ring.r;
-        var grad = ctx.createRadialGradient(x, y, 0, x, y, ring.w);
-        grad.addColorStop(0, ring.c1 + (alpha * flicker) + ')');
-        grad.addColorStop(1, ring.c2 + '0)');
-        ctx.beginPath();
-        ctx.arc(x, y, ring.w * flicker, 0, Math.PI * 2);
-        ctx.fillStyle = grad;
-        ctx.fill();
+      // Dark background
+      ctx.fillStyle = 'rgba(0,0,0,0.92)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      var portalR = 0;
+      var glowAlpha = 0;
+      var sparkAlpha = 0;
+
+      if(elapsed < phase1){
+        // Phase 1: Portal opening
+        var t = easeOutCubic(elapsed / phase1);
+        portalR = (targetSize/2) * t;
+        glowAlpha = t;
+        sparkAlpha = t;
+        portalWin.style.width = (portalR*2)+'px';
+        portalWin.style.height = (portalR*2)+'px';
+
+      } else if(elapsed < phase1 + phase2){
+        // Phase 2: Hold — portal fully open
+        portalR = targetSize/2;
+        glowAlpha = 1;
+        sparkAlpha = 1;
+        portalWin.style.width = (portalR*2)+'px';
+        portalWin.style.height = (portalR*2)+'px';
+
+      } else if(elapsed < total){
+        // Phase 3: Warp in — portal expands to fill screen
+        var t = easeInCubic((elapsed - phase1 - phase2) / phase3);
+        portalR = (targetSize/2) + (Math.max(canvas.width,canvas.height)) * t;
+        glowAlpha = 1 - t;
+        sparkAlpha = 1 - t;
+        portalWin.style.width = (portalR*2)+'px';
+        portalWin.style.height = (portalR*2)+'px';
       }
-    });
 
-    // Sparks shooting outward
-    for(var s = 0; s < 24; s++){
-      var sa = (s / 24) * Math.PI * 2 + rot * 2.5;
-      var sparkLen = portalR * (0.15 + Math.abs(Math.sin(sa * 3 + rot)) * 0.25);
-      var sx = cx + Math.cos(sa) * portalR;
-      var sy = cy + Math.sin(sa) * portalR;
-      var ex = sx + Math.cos(sa) * sparkLen;
-      var ey = sy + Math.sin(sa) * sparkLen;
+      // Rotating spark ring
+      sparks.forEach(function(s){
+        s.angle += s.spd * 0.012;
+        var sx = cx + Math.cos(s.angle + s.offset) * s.orbitR * (portalR / (targetSize/2));
+        var sy = cy + Math.sin(s.angle + s.offset) * s.orbitR * (portalR / (targetSize/2));
+        ctx.globalAlpha = sparkAlpha * (0.6 + 0.4 * Math.sin(s.life * 10 + elapsed*0.005));
+        ctx.fillStyle = s.color;
+        ctx.beginPath();
+        ctx.arc(sx, sy, s.size, 0, Math.PI*2);
+        ctx.fill();
+      });
+
+      // Outer glow rings
+      ctx.globalAlpha = glowAlpha;
+      for(var ring=0; ring<3; ring++){
+        var ringR = portalR + ring*8 - elapsed*0.02 % 24;
+        ctx.beginPath();
+        ctx.arc(cx, cy, Math.max(ringR,0), 0, Math.PI*2);
+        ctx.strokeStyle = ring===0 ? '#F8E48A' : ring===1 ? '#C8960C' : 'rgba(255,200,0,0.3)';
+        ctx.lineWidth = ring===0 ? 4 : ring===1 ? 2 : 8;
+        ctx.stroke();
+      }
+
+      // Inner dark vortex
+      var vortex = ctx.createRadialGradient(cx, cy, 0, cx, cy, portalR*0.6);
+      vortex.addColorStop(0, 'rgba(0,0,0,0)');
+      vortex.addColorStop(0.5, 'rgba(5,10,20,0.3)');
+      vortex.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.globalAlpha = glowAlpha * 0.7;
+      ctx.fillStyle = vortex;
       ctx.beginPath();
-      ctx.moveTo(sx, sy);
-      ctx.lineTo(ex, ey);
-      ctx.strokeStyle = 'rgba(255, 220, 80, ' + (alpha * 0.7) + ')';
-      ctx.lineWidth = 1.5;
-      ctx.stroke();
-    }
+      ctx.arc(cx, cy, portalR, 0, Math.PI*2);
+      ctx.fill();
 
-    // Inner swirl lines
-    ctx.save();
-    ctx.translate(cx, cy);
-    ctx.rotate(rot * 1.8);
-    for(var sw = 0; sw < 8; sw++){
-      var swA = (sw / 8) * Math.PI * 2;
-      ctx.beginPath();
-      ctx.moveTo(0, 0);
-      ctx.quadraticCurveTo(
-        Math.cos(swA) * portalR * 0.4,
-        Math.sin(swA) * portalR * 0.4,
-        Math.cos(swA + 0.8) * portalR * 0.8,
-        Math.sin(swA + 0.8) * portalR * 0.8
-      );
-      ctx.strokeStyle = 'rgba(200, 140, 10, ' + (alpha * 0.25) + ')';
-      ctx.lineWidth = 1;
-      ctx.stroke();
-    }
-    ctx.restore();
-
-    ctx.restore();
-  }
-
-  function animate(ts){
-    if(!start) start = ts;
-    var elapsed = ts - start;
-    var progress = Math.min(elapsed / totalDuration, 1);
-    rotation = elapsed * 0.002;
-
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    var phase1 = 0.55; // portal growing
-    var phase2 = 0.80; // portal full, hold
-    var phase3 = 1.00; // fade out + teleport
-
-    if(progress <= phase1){
-      // Phase 1: Portal opens from center, grows to 70% screen
-      var p = easeInOut(progress / phase1);
-      var targetR = Math.min(canvas.width, canvas.height) * 0.38;
-      var portalR = targetR * p;
-      drawPortal(cx, cy, portalR, p, rotation, false, 0);
-
-    } else if(progress <= phase2){
-      // Phase 2: Portal fully open, wormhole feel, hold
-      var targetR = Math.min(canvas.width, canvas.height) * 0.38;
-      drawPortal(cx, cy, targetR, 1, rotation, true, 1);
-
-    } else {
-      // Phase 3: Portal expands to cover full screen then teleport
-      var p = (progress - phase2) / (phase3 - phase2);
-      var ep = easeInOut(p);
-      var targetR = Math.min(canvas.width, canvas.height) * 0.38;
-      var maxR = Math.sqrt(cx*cx + cy*cy) * 1.4;
-      var portalR = targetR + (maxR - targetR) * ep;
-      drawPortal(cx, cy, portalR, 1 - ep * 0.3, rotation, true, 1);
-    }
-
-    if(progress < 1){
-      requestAnimationFrame(animate);
-    } else {
-      overlay.style.display = 'none';
-      window.scrollTo({ top: regTop, behavior: 'instant' });
-    }
-  }
-
-  requestAnimationFrame(animate);
-});
-</script>
-
-    if(progress < 1){
-      requestAnimationFrame(animate);
-    } else {
-      // Instant teleport
-      overlay.style.display = 'none';
       ctx.globalAlpha = 1;
-      var reg = document.getElementById('register');
-      reg.scrollIntoView({ behavior: 'instant' });
-    }
-  }
 
-  requestAnimationFrame(animate);
-});
+      if(elapsed < total){
+        requestAnimationFrame(draw);
+      } else {
+        // Teleport!
+        overlay.style.display = 'none';
+        portalWin.style.width = '0px';
+        portalWin.style.height = '0px';
+        var reg = document.getElementById('register');
+        reg.scrollIntoView({ behavior: 'instant' });
+      }
+    }
+
+    requestAnimationFrame(draw);
+  });
+})();
 </script>
 </body>
 </html>
