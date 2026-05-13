@@ -460,7 +460,7 @@ window.addEventListener('load', function(){
   <p class="hero-tagline">Claim Your Throne</p>
 
   <div class="hero-btns">
-    <a href="#register" class="btn-primary">Register Now</a>
+    <a href="#register" class="btn-primary" onclick="event.preventDefault();document.getElementById('register').scrollIntoView({behavior:'instant'});">Register Now</a>
     <a href="#about" class="btn-outline">Know More</a>
   </div>
 </section>
