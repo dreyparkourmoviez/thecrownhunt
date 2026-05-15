@@ -636,7 +636,7 @@ var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxQwrG3fWsiE1IZpdaBhQ-
 fetch(SCRIPT_URL)
   .then(function(res){ return res.json(); })
   .then(function(data){ document.getElementById('liveCounter').textContent = data.count; })
-  .catch(function(){ document.getElementById('liveCounter').textContent = '18+'; });
+  .catch(function(){ document.getElementById('liveCounter').textContent = '25+'; });
 
 var form = document.getElementById('crownForm');
 if(form){
@@ -665,7 +665,7 @@ if(form){
           btn.disabled = false;
         } else {
           var el = document.getElementById('liveCounter');
-          var current = parseInt(el.textContent) || 18;
+          var current = parseInt(el.textContent) || 25;
           el.textContent = current + 1;
           form.style.display = 'none';
           document.getElementById('successMsg').style.display = 'block';
