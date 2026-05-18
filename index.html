@@ -410,28 +410,58 @@
       </p>
       <hr style="border-color:rgba(200,150,12,0.3); margin:10px 0;"/>
       <p style="text-align:center; font-size:0.9rem; margin-bottom:6px;">
+<div id="eventPopup" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:9999; justify-content:center; align-items:center;">
+  <div style="position:relative; max-width:92%; max-height:92vh; overflow-y:auto; border-radius:10px; background:rgba(10,22,40,0.97);">
+    
+    <!-- Close Button -->
+    <button onclick="document.getElementById('eventPopup').style.display='none'" style="position:sticky; top:8px; float:right; margin:8px 8px 0 0; background:var(--gold); border:none; border-radius:50%; width:32px; height:32px; font-size:1.1rem; cursor:pointer; font-weight:bold; z-index:10;">✕</button>
+
+    <!-- Image -->
+    <img src="rohtak_auditions.jpg" alt="Event" style="max-width:100%; display:block; border-radius:10px 10px 0 0;"/>
+
+    <!-- Dress Code + Contact Info -->
+    <div style="padding:16px 20px; font-family:'Raleway',sans-serif; color:#f5f0e8;">
+
+      <p style="text-align:center; margin-bottom:12px; font-size:0.95rem; line-height:1.8;">
+        👗 <strong style="color:#F8E48A;">DRESS CODE</strong><br/>
+        👖 Blue Denim / Shorts<br/>
+        👕 White Shirt / T-Shirt / Kurta
+      </p>
+
+      <hr style="border-color:rgba(200,150,12,0.3); margin:10px 0;"/>
+
+      <p style="text-align:center; font-size:0.9rem; margin-bottom:6px;">
         📞 <strong style="color:#F8E48A;">CONTACT</strong>
       </p>
       <p style="text-align:center; font-size:0.88rem; margin-bottom:4px;">
         🎬 <strong>Drey Parkour</strong> — +91 83959 66960<br/>
         <em style="color:#d4c49a; font-size:0.8rem;">(DreyParkour MOVIEZ)</em>
       </p>
-      <p style="text-align:center; font-size:0.88rem; margin-bottom:10px;">
+      <p style="text-align:center; font-size:0.88rem; margin-bottom:12px;">
         🎬 <strong>Ajayalok</strong> — +91 98966 91536<br/>
         <em style="color:#d4c49a; font-size:0.8rem;">(Strange Pictures)</em>
       </p>
+
       <hr style="border-color:rgba(200,150,12,0.3); margin:10px 0;"/>
+
       <p style="text-align:center; font-size:0.82rem; color:#d4c49a; margin-bottom:4px;">
         See you on stage. Give it your best! 👑
       </p>
-      <p style="text-align:center; font-size:0.75rem; color:#8a6508; font-style:italic;">
+      <p style="text-align:center; font-size:0.75rem; color:#8a6508; font-style:italic; margin-bottom:4px;">
         Strange Pictures & DreyParkour MOVIEZ Presents
       </p>
-      <p style="text-align:center; font-size:1rem; font-family:'Cinzel',serif; color:#F8E48A; letter-spacing:2px;">
+      <p style="text-align:center; font-size:1rem; font-family:'Cinzel',serif; color:#F8E48A; letter-spacing:2px; margin-bottom:16px;">
         <strong>The Crown Hunt</strong><br/>Mr. & Miss Haryana 2026
       </p>
-    </div>
 
+      <!-- Register Now Button -->
+      <div style="text-align:center; padding-bottom:8px;">
+        <a href="#register" onclick="document.getElementById('eventPopup').style.display='none'" style="display:inline-block; background:linear-gradient(135deg,#C8960C,#F8E48A); color:#0a1628; font-family:'Cinzel',serif; font-weight:700; font-size:0.95rem; letter-spacing:2px; padding:12px 32px; border-radius:4px; text-decoration:none; text-transform:uppercase;">
+          Register Now 👑
+        </a>
+      </div>
+
+    </div>
   </div>
 </div>
 
@@ -439,7 +469,7 @@
 window.addEventListener('load', function(){
   document.getElementById('eventPopup').style.display = 'flex';
 });
-</script>
+          </script>
 <div id="eventsModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(10,22,40,0.98); z-index:9999; justify-content:center; align-items:center; overflow-y:auto;">
   <div style="position:relative; max-width:95%; padding:20px; text-align:center; max-height:90vh; overflow-y:auto; background:#0a1628; border:1px solid rgba(200,150,12,0.3); border-radius:8px;">
     <button onclick="document.getElementById('eventsModal').style.display='none'" style="position:fixed; top:15px; right:15px; background:var(--gold); border:none; border-radius:50%; width:36px; height:36px; font-size:1.2rem; cursor:pointer; font-weight:bold;">✕</button>
