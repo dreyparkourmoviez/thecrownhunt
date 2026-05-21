@@ -400,6 +400,28 @@
       .form-grid { grid-template-columns: 1fr; }
 
     }
+                           /* ── DESKTOP: 20% scale up (images excluded) ── */
+    @media (min-width: 900px) {
+      body { font-size: 120%; }
+      .nav-logo { font-size: 1.44rem; }
+      .nav-links a { font-size: 0.94rem; }
+      .hero-the { font-size: 1.56rem; }
+      .hero-title { font-size: clamp(4.2rem, 10vw, 8.4rem); }
+      .hero-tagline { font-size: 1.44rem; }
+      .divider-line { width: 96px; }
+      .btn-primary, .btn-outline { padding: 16.8px 43.2px; font-size: 0.9rem; }
+      .section-label { font-size: 1.14rem; }
+      .section-title { font-size: clamp(2.4rem, 5vw, 3.84rem); }
+      .about-card h3 { font-size: 1.08rem; }
+      .about-card p { font-size: 1.056rem; }
+      .about-desc { font-size: 1.44rem; }
+      .form-row label { font-size: 0.864rem; }
+      .form-row input, .form-row select, .form-row textarea { font-size: 1.08rem; padding: 14.4px 19.2px; }
+      .form-submit { font-size: 1.02rem; padding: 19.2px; }
+      .contact-card h4 { font-size: 0.9rem; }
+      .contact-card p, .contact-card a { font-size: 1.056rem; }
+      footer p { font-size: 0.9rem; }
+    }
   </style>
 </head>
 <body>
