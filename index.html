@@ -38,6 +38,17 @@
       scrollbar-color: #C8960C #0a1628;
     }
 
+    body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -998;
+  background: rgba(4,11,26,0.40);
+  pointer-events: none;
+    }
     body::after {
   content: "";
   position: fixed;
@@ -112,9 +123,9 @@
       position: absolute; inset: 0;
       background: linear-gradient(
         180deg,
-        rgba(4,11,26,0.85) 0%,
-        rgba(4,11,26,0.62) 45%,
-        rgba(4,11,26,0.82) 100%
+        rgba(4,11,26,0.55) 0%,
+        rgba(4,11,26,0.35) 45%,
+        rgba(4,11,26,0.50) 100%
       );
       pointer-events: none;
       z-index: 0;
