@@ -571,11 +571,11 @@ window.addEventListener('load', function(){
         <div class="form-grid">
           <div class="form-row">
             <label>First Name</label>
-            <input type="text" name="firstName" placeholder="" required/>
+            <input type="text" name="firstName" placeholder="" required autocapitalize="words"/>
           </div>
           <div class="form-row">
             <label>Last Name</label>
-            <input type="text" name="lastName" placeholder="" required/>
+            <input type="text" name="lastName" placeholder="" required autocapitalize="words"/>
           </div>
         </div>
         <div class="form-grid">
@@ -603,12 +603,12 @@ window.addEventListener('load', function(){
         </div>
         <div class="form-row">
           <label>City / State</label>
-          <input type="text" name="city" placeholder="" required/>
+          <input type="text" name="city" placeholder="" required autocapitalize="words"/>
         </div>
         <div class="form-row">
           <label>Why do you want to join?</label>
-          <textarea name="reason" placeholder="Tell us your story (Optional)..."></textarea>
-        </div>
+          <textarea name="reason" placeholder="Tell us your story (Optional)..." autocapitalize="sentences"></textarea>
+          </div>
         <div class="form-row">
           <label>How did you get to know about us?</label>
           <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:10px 0;">
@@ -778,6 +778,17 @@ fetch(SCRIPT_URL)
   } catch(e){}
 })();
 
+  /* ── AUTO CAPITALIZE ── */
+['firstName','lastName','city'].forEach(function(fieldName){
+  var el = document.querySelector('[name="'+fieldName+'"]');
+  if(!el) return;
+  el.addEventListener('input', function(){
+    var pos = el.selectionStart;
+    var val = el.value.replace(/\b\w/g, function(c){ return c.toUpperCase(); });
+    el.value = val;
+    el.setSelectionRange(pos, pos);
+  });
+});
 /* ── "Other" radio → show text box ── */
 var hearOtherRadio = document.getElementById('hearOtherRadio');
 var hearAboutOther = document.getElementById('hearAboutOther');
