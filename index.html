@@ -970,5 +970,35 @@ if(form){
     }
   }
 </script>
+  <!-- Section Snap Scroll -->
+<script>
+  var sections = Array.from(document.querySelectorAll('section, #home'));
+  var isScrolling = false;
+  if(window.innerWidth < 900) return;
+
+  function jumpToSection(dir) {
+    if(isScrolling) return;
+    var current = 0;
+    var scrollY = window.scrollY + window.innerHeight / 2;
+    sections.forEach(function(sec, i){
+      if(sec.offsetTop <= scrollY) current = i;
+    });
+    var next = current + dir;
+    if(next < 0 || next >= sections.length) return;
+    isScrolling = true;
+    sections[next].scrollIntoView({ behavior: 'smooth', block: 'start' });
+    setTimeout(function(){ isScrolling = false; }, 800);
+  }
+
+  window.addEventListener('wheel', function(e){
+    e.preventDefault();
+    jumpToSection(e.deltaY > 0 ? 1 : -1);
+  }, { passive: false });
+
+  window.addEventListener('keydown', function(e){
+    if(e.key === 'ArrowDown' || e.key === 'PageDown') { e.preventDefault(); jumpToSection(1); }
+    if(e.key === 'ArrowUp' || e.key === 'PageUp') { e.preventDefault(); jumpToSection(-1); }
+  });
+</script>
 </body>
 </html>
