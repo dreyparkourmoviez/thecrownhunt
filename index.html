@@ -652,6 +652,23 @@ window.addEventListener('load', function(){
           </div>
           <input type="text" name="hearAboutOther" id="hearAboutOther" placeholder="Please specify..." style="display:none; margin-top:6px;"/>
         </div>
+        <div class="form-row">
+  <label>Preferred City for Audition</label>
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:10px 0;">
+    <label style="display:flex; align-items:center; gap:10px; font-family:'Raleway',sans-serif; font-size:0.85rem; color:var(--text-light); cursor:pointer; letter-spacing:1px;">
+      <input type="radio" name="preferredCity" value="Hisar" style="accent-color:#C8960C; width:16px; height:16px; flex-shrink:0;" required> Hisar
+    </label>
+    <label style="display:flex; align-items:center; gap:10px; font-family:'Raleway',sans-serif; font-size:0.85rem; color:var(--text-light); cursor:pointer; letter-spacing:1px;">
+      <input type="radio" name="preferredCity" value="Gurgaon" style="accent-color:#C8960C; width:16px; height:16px; flex-shrink:0;"> Gurgaon
+    </label>
+    <label style="display:flex; align-items:center; gap:10px; font-family:'Raleway',sans-serif; font-size:0.85rem; color:var(--text-light); cursor:pointer; letter-spacing:1px;">
+      <input type="radio" name="preferredCity" value="Chandigarh" style="accent-color:#C8960C; width:16px; height:16px; flex-shrink:0;"> Chandigarh
+    </label>
+    <label style="display:flex; align-items:center; gap:10px; font-family:'Raleway',sans-serif; font-size:0.85rem; color:var(--text-light); cursor:pointer; letter-spacing:1px;">
+      <input type="radio" name="preferredCity" value="Noida" style="accent-color:#C8960C; width:16px; height:16px; flex-shrink:0;"> Noida
+    </label>
+  </div>
+</div>
         <button type="submit" class="form-submit">CLAIM YOUR THRONE →</button>
       </form>
       <div id="successMsg" style="display:none;text-align:center;padding:60px 20px;">
@@ -851,6 +868,10 @@ if(form){
     formData.append('city',         form.city.value);
     formData.append('reason',       form.reason.value);
     formData.append('hearAbout',    hearAboutVal);
+    var preferredCityVal = '';
+var checkedCity = form.querySelector('input[name="preferredCity"]:checked');
+if(checkedCity) preferredCityVal = checkedCity.value;
+formData.append('preferredCity', preferredCityVal);
 
     fetch(SCRIPT_URL, { method:'POST', body:formData })
       .then(function(res){ return res.json(); })
