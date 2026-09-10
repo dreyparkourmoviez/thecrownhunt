@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FAQ — The Crown Hunt</title>
+<style>
+  :root{
+    --navy:#0F1C3F;
+    --navy-deep:#0A1430;
+    --cream:#FAF5EC;
+    --gold:#C9A227;
+    --gold-light:#E4C666;
+    --champagne:#E8D9A8;
+    --ink:#22262E;
+    --line:rgba(15,28,63,0.12);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    padding-top:30px;
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Georgia','Times New Roman',serif;
+  }
+  .marquee-bar{
+    position:fixed;top:0;left:0;right:0;height:30px;
+    display:flex;align-items:center;background:var(--champagne);
+    overflow:hidden;white-space:nowrap;z-index:1000;
+  }
+  .marquee-track{display:inline-block;padding-left:100%;animation:marquee 27.5s linear infinite;}
+  .marquee-track span{font-family:Arial,sans-serif;font-weight:bold;font-size:14px;color:var(--navy);letter-spacing:0.4px;}
+  @keyframes marquee{0%{transform:translateX(0);}100%{transform:translateX(-100%);}}
+  @media(max-width:640px){
+    .marquee-bar{height:22px;}
+    .marquee-track span{font-size:11px;}
+    .marquee-track{animation-duration:20s;}
+    body{padding-top:22px;}
+  }
+  header{
+    background:var(--navy);color:var(--champagne);position:relative;z-index:50;
+    padding:28px 160px 12px;min-height:120px;
+  }
+  .logo-badge{
+    position:absolute;left:32px;top:50%;margin-top:-44px;
+    width:88px;height:88px;border-radius:50%;object-fit:cover;background:var(--gold);
+  }
+  .site-title{text-align:center;font-size:40px;letter-spacing:2px;font-weight:bold;color:var(--champagne);}
+  .site-title span{display:block;font-size:26px;letter-spacing:5px;color:var(--champagne);font-family:Arial,sans-serif;font-weight:bold;margin-top:8px;}
+  .header-icons{position:absolute;right:32px;top:28px;display:flex;gap:28px;font-size:36px;}
+  .header-icons a{
+    color:var(--champagne);text-decoration:none;opacity:0.95;display:flex;align-items:center;justify-content:center;
+    width:44px;height:44px;border-radius:50%;border:1.5px solid var(--gold);background:rgba(201,162,39,0.08);
+    transition:background .25s ease, color .25s ease, transform .25s ease;
+  }
+  .header-icons a:hover{background:var(--gold);color:var(--navy);transform:translateY(-2px);}
+  .header-icons svg{width:20px;height:20px;fill:currentColor;vertical-align:middle;}
+  @media(max-width:640px){
+    header{padding:10px 100px 10px 52px;min-height:60px;}
+    .logo-badge{left:8px;width:32px;height:32px;margin-top:-16px;}
+    .site-title{font-size:15px;letter-spacing:1px;}
+    .site-title span{font-size:11px;letter-spacing:1.5px;margin-top:3px;}
+    .header-icons{right:8px;top:50%;margin-top:-13px;gap:6px;font-size:18px;}
+    .header-icons a{width:26px;height:26px;}
+    .header-icons svg{width:12px;height:12px;}
+  }
+  .main-nav{
+    background:var(--navy);display:flex;flex-wrap:nowrap;align-items:flex-end;justify-content:flex-start;
+    gap:14px;padding:6px 16px 0;border-top:1.2px solid var(--champagne);border-bottom:2px solid var(--champagne);
+    overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;
+  }
+  .main-nav::-webkit-scrollbar{display:none;}
+  .nav-tab{
+    flex-shrink:0;font-family:Arial,sans-serif;font-size:12px;font-weight:bold;letter-spacing:0.4px;
+    color:var(--champagne);border:1.5px solid var(--champagne);border-bottom:none;border-radius:10px 10px 0 0;
+    padding:3px 14px 4px;text-decoration:none;white-space:nowrap;transition:background 0.2s, color 0.2s;
+  }
+  .nav-tab:hover{background:rgba(232,217,168,0.15);}
+  .nav-tab.active{background:var(--champagne);color:var(--navy);}
+  @media(max-width:640px){
+    .main-nav{gap:9px;padding:6px 10px 0;}
+    .nav-tab{font-size:10.5px;padding:2px 12px 3px;border-radius:8px 8px 0 0;}
+  }
+  section{padding:56px 24px;max-width:900px;margin:0 auto;}
+  @media(max-width:640px){section{padding:28px 18px;}}
+  .section-title{text-align:center;font-size:26px;color:var(--navy);margin-bottom:8px;position:relative;}
+  .section-title .accent{color:var(--gold);}
+  .rule{width:60px;height:3px;background:var(--gold);margin:0 auto 22px;}
+  .lang-toggle{display:flex;justify-content:center;gap:10px;margin-bottom:30px;font-family:Arial,sans-serif;}
+  .lang-btn{
+    border:1.5px solid var(--gold);background:#fff;color:var(--navy);font-weight:bold;font-size:13px;
+    letter-spacing:0.5px;padding:8px 22px;border-radius:20px;cursor:pointer;transition:background .2s,color .2s;
+  }
+  .lang-btn.active{background:var(--navy);color:var(--champagne);border-color:var(--navy);}
+  .faq-category{font-family:Arial,sans-serif;font-size:14px;font-weight:bold;letter-spacing:1.5px;color:var(--gold);
+    text-transform:uppercase;margin:34px 0 6px;border-bottom:1px solid var(--line);padding-bottom:6px;}
+  .faq-category:first-of-type{margin-top:0;}
+  .faq-item{border-bottom:1px solid var(--line);padding:16px 0;font-family:Arial,sans-serif;}
+  .faq-item summary{cursor:pointer;font-weight:bold;color:var(--navy);list-style:none;display:flex;justify-content:space-between;gap:12px;}
+  .faq-item summary::-webkit-details-marker{display:none;}
+  .faq-item summary::after{content:"+";color:var(--gold);font-size:20px;flex-shrink:0;}
+  .faq-item[open] summary::after{content:"–";}
+  .faq-item p{font-size:14px;color:#444;margin:10px 0 0;line-height:1.6;}
+  #faq-hi{font-family:'Noto Sans Devanagari','Mangal',Arial,sans-serif;}
+  #faq-hi .faq-item p, #faq-hi .faq-item summary{font-family:'Noto Sans Devanagari','Mangal',Arial,sans-serif;}
+  footer{background:var(--navy-deep);color:var(--cream);padding:40px 24px 20px;font-family:Arial,sans-serif;}
+  .footer-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;max-width:900px;margin:0 auto;}
+  @media(max-width:640px){.footer-grid{grid-template-columns:1fr;}}
+  footer h4{color:var(--gold);font-size:13px;letter-spacing:2px;margin-bottom:14px;}
+  footer a{display:block;color:var(--cream);opacity:0.85;text-decoration:none;font-size:13px;margin-bottom:8px;}
+  .copyright{text-align:center;margin-top:30px;padding-top:18px;border-top:1px solid rgba(250,245,236,0.15);font-size:12px;color:var(--gold-light);opacity:0.95;}
+  .scroll-top{
+    position:fixed;bottom:24px;right:24px;width:44px;height:44px;background:var(--navy);
+    border:2px solid var(--gold);color:var(--gold);border-radius:50%;display:flex;align-items:center;
+    justify-content:center;font-size:18px;z-index:60;text-decoration:none;
+  }
+</style>
+</head>
+<body id="top">
+
+<div class="marquee-bar">
+  <div class="marquee-track">
+    <span>Registrations are open for Mr. &amp; Miss Haryana 2026, 1st ever Pageant where we give 100% Industry Placement not just the assistance. REGISTER NOW!!</span>
+  </div>
+</div>
+
+<header>
+  <img src="logo.webp" alt="The Crown Hunt logo" class="logo-badge">
+  <div class="site-title">THE CROWN HUNT<span>CLAIM YOUR THRONE</span></div>
+  <div class="header-icons">
+    <a href="tel:+918395966960" title="Call"><svg viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.2 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.2.3.1.7-.2 1l-2.2 2.2z"/></svg></a>
+    <a href="https://www.instagram.com/thecrownhunt.in?igsh=dXZ6cXhkNzh3eDE2" target="_blank" title="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2c2.7 0 3.1 0 4.1.1 1.1 0 1.8.2 2.5.5.7.3 1.2.6 1.8 1.2.6.6.9 1.1 1.2 1.8.3.7.5 1.4.5 2.5.1 1 .1 1.4.1 4.1s0 3.1-.1 4.1c0 1.1-.2 1.8-.5 2.5-.3.7-.6 1.2-1.2 1.8-.6.6-1.1.9-1.8 1.2-.7.3-1.4.5-2.5.5-1 .1-1.4.1-4.1.1s-3.1 0-4.1-.1c-1.1 0-1.8-.2-2.5-.5-.7-.3-1.2-.6-1.8-1.2-.6-.6-.9-1.1-1.2-1.8-.3-.7-.5-1.4-.5-2.5-.1-1-.1-1.4-.1-4.1s0-3.1.1-4.1c0-1.1.2-1.8.5-2.5.3-.7.6-1.2 1.2-1.8.6-.6 1.1-.9 1.8-1.2.7-.3 1.4-.5 2.5-.5 1-.1 1.4-.1 4.1-.1m0-2C9.2 0 8.8 0 7.7.1c-1 .1-2 .3-2.8.6-.8.3-1.5.8-2.1 1.4-.6.6-1.1 1.3-1.4 2.1-.3.8-.5 1.8-.6 2.8C.1 8.2 0 8.6 0 12s0 3.8.1 4.9c.1 1 .3 2 .6 2.8.3.8.8 1.5 1.4 2.1.6.6 1.3 1.1 2.1 1.4.8.3 1.8.5 2.8.6 1.1.1 1.5.1 4.9.1s3.8 0 4.9-.1c1-.1 2-.3 2.8-.6.8-.3 1.5-.8 2.1-1.4.6-.6 1.1-1.3 1.4-2.1.3-.8.5-1.8.6-2.8.1-1.1.1-1.5.1-4.9s0-3.8-.1-4.9c-.1-1-.3-2-.6-2.8-.3-.8-.8-1.5-1.4-2.1-.6-.6-1.3-1.1-2.1-1.4-.8-.3-1.8-.5-2.8-.6-1.1-.1-1.5-.1-4.9-.1z"/><circle cx="12" cy="12" r="3.5"/><circle cx="18.5" cy="5.5" r="1.3"/></svg></a>
+    <a href="mailto:info.thecrownhunt@gmail.com" title="Email"><svg viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M2 6a2 2 0 012-2h16a2 2 0 012 2v12a2 2 0 01-2 2H4a2 2 0 01-2-2V6zm2.4.5L12 12.7l7.6-6.2H4.4zM20 8.6l-7.38 6.02a1 1 0 01-1.24 0L4 8.6V18h16V8.6z"/></svg></a>
+  </div>
+</header>
+
+<nav class="main-nav">
+  <a href="index.html#top" class="nav-tab">Home</a>
+  <a href="index.html#register" class="nav-tab">Register</a>
+  <a href="index.html#testimonials" class="nav-tab">Feedback</a>
+  <a href="agreement.html" class="nav-tab">Compliance</a>
+  <a href="events.html" class="nav-tab">Events</a>
+  <a href="sponsors.html" class="nav-tab">Sponsors</a>
+  <a href="faq.html" class="nav-tab active">FAQ</a>
+  <a href="index.html#about" class="nav-tab">About Us</a>
+</nav>
+
+<section id="faq">
+  <h2 class="section-title">Frequently Asked <span class="accent">Questions</span></h2>
+  <div class="rule"></div>
+
+  <div class="lang-toggle">
+    <button class="lang-btn active" id="btn-en" onclick="showLang('en')">English</button>
+    <button class="lang-btn" id="btn-hi" onclick="showLang('hi')">हिंदी</button>
+  </div>
+
+  <div id="faq-en">
+
+    <div class="faq-category">Event Basics</div>
+    <details class="faq-item"><summary>Q1. What is The Crown Hunt?</summary><p>The Crown Hunt: Mr. &amp; Miss Haryana 2026 is Haryana's pageant and industry-placement programme, produced by DreyParkour MOVIEZ, designed to give selected contestants professional training, portfolio development and real entertainment-industry work opportunities — not just a title.</p></details>
+    <details class="faq-item"><summary>Q2. Who is organising it?</summary><p>DreyParkour MOVIEZ, led by Drey Parkour (actor, director, producer with verifiable industry work history), along with production support for the Crown Hunt programme.</p></details>
+    <details class="faq-item"><summary>Q3. What is the selection process?</summary><p>Registration → City Audition → Personal Interaction/Jury Round → Top 50 Male + Top 50 Female Finalists → 5–7 Day Grooming → Portfolio + Video Shoot → Grand Finale → Industry Work/Placement.</p></details>
+    <details class="faq-item"><summary>Q4. Which cities are holding auditions?</summary><p>Rohtak and Hisar auditions are completed. Gurgaon, Chandigarh and Noida auditions are currently on hold.</p></details>
+    <details class="faq-item"><summary>Q5. Where and when is the Grand Finale?</summary><p>Gurgaon/Chandigarh (venue city under final confirmation).</p></details>
+    <details class="faq-item"><summary>Q6. Is registration free?</summary><p>Yes, the initial audition registration is free. The programme fee applies only after selection, at the enrolment stage.</p></details>
+    <details class="faq-item"><summary>Q7. Who selects the Chief Jury and other jury members?</summary><p>The Chief Jury panel is being finalised and will be announced closer to the finale.</p></details>
+
+    <div class="faq-category">Programme Benefits</div>
+    <details class="faq-item"><summary>Q8. What benefits will I get from the event as a contestant?</summary><p>A professional portfolio shoot, a professional video profile, acting and modelling training, personality development and grooming, industry work and placement opportunities, audition/casting exposure, professional work credit with IMDb facilitation, and a post-finale magazine feature. This is a career-entry package, not a title-only pageant.</p></details>
+    <details class="faq-item"><summary>Q9. What do I get in the professional portfolio shoot?</summary><p>A professional indoor and outdoor shoot with 10–15 edited photographs (potentially up to 20 depending on performance and standards), plus remaining photographs in raw format.</p></details>
+    <details class="faq-item"><summary>Q10. Do I need to bring my own outfits for the shoot?</summary><p>Yes, unless separately agreed, you are responsible for bringing suitable personal outfits. The organisation may guide you on suitable colours, styles and looks.</p></details>
+    <details class="faq-item"><summary>Q11. What is the video profile for?</summary><p>It is a professionally created video profile meant for auditions, casting calls and industry introduction — not a personal biography video.</p></details>
+    <details class="faq-item"><summary>Q12. What training will I receive?</summary><p>Professional training covering acting (expressions, dialogue delivery, camera facing, character work), modelling (ramp walk, posing, camera angles), personality development, communication, interview skills and professional grooming.</p></details>
+    <details class="faq-item"><summary>Q13. Is attending training and shoots mandatory?</summary><p>Yes, active participation in scheduled programme activities is required. Repeated non-attendance without valid reason may affect eligibility for future work opportunities.</p></details>
+    <details class="faq-item"><summary>Q14. Will I definitely get industry work?</summary><p>The organisation is committed to providing at least one suitable professional industry work opportunity through its own projects and network, based on your talent, interest, suitability, availability, project requirements and on-set behaviour.</p></details>
+    <details class="faq-item"><summary>Q15. What kind of work opportunities can I be considered for?</summary><p>Acting projects, music videos, modelling assignments, promotional projects, web/short-form content, Assistant Director (AD) work, production-related assignments, and other suitable entertainment-industry opportunities.</p></details>
+    <details class="faq-item"><summary>Q16. Is a lead role or specific project guaranteed?</summary><p>For placement projects that are part of this event, the effort will mainly be to place contestants in lead, semi-lead or parallel-potential on-camera roles, so contestants get maximum exposure benefit. Beyond this, specific on-script project demands (a particular script, character, celebrity pairing, fixed number of projects, shoot location or remuneration) cannot be committed right now unless separately confirmed in writing.</p></details>
+    <details class="faq-item"><summary>Q17. Who decides which role or project I get?</summary><p>The organisation has final professional discretion over casting, role allocation and project suitability, exercised for genuine casting and production reasons.</p></details>
+    <details class="faq-item"><summary>Q18. How long will it take to get placement?</summary><p>The organisation targets approximately 6–12 months maximum to complete programme deliverables and work opportunities.</p></details>
+    <details class="faq-item"><summary>Q19. What if I'm not suitable for a particular project?</summary><p>The organisation may select another suitable contestant for that project instead.</p></details>
+    <details class="faq-item"><summary>Q20. Will I get audition/casting exposure?</summary><p>Yes, finalists get access to relevant auditions and casting opportunities through The Crown Hunt's industry network during the programme period.</p></details>
+    <details class="faq-item"><summary>Q21. Can projects get postponed, delayed or cancelled?</summary><p>Yes, this can happen due to creative, technical, financial, location, artist availability, client requirements or other production circumstances. The organisation will make reasonable efforts to consider you for other suitable opportunities.</p></details>
+    <details class="faq-item"><summary>Q22. Will I get a professional work credit?</summary><p>Yes, if selected for an eligible acting-based project, you will receive appropriate professional work credit.</p></details>
+    <details class="faq-item"><summary>Q23. Is IMDb credit guaranteed?</summary><p>No. IMDb listing/credit will be facilitated for eligible released projects, but it is subject to IMDb's own guidelines, verification and independent approval — it cannot be guaranteed.</p></details>
+    <details class="faq-item"><summary>Q24. Will I get a magazine feature?</summary><p>Yes, every finalist gets a dedicated interview and photograph feature after the Grand Finale in the designated print magazine/publication associated with The Crown Hunt.</p></details>
+    <details class="faq-item"><summary>Q25. Can my photos/videos be used for promotion?</summary><p>Yes, the organisation may use photographs and videos from the programme for legitimate Crown Hunt promotion, casting, social media, website and press purposes.</p></details>
+
+    <div class="faq-category">Fee &amp; Payment</div>
+    <details class="faq-item"><summary>Q26. Why shall I pay the fee?</summary><p>Nothing of this scale is built for free — training, professional portfolio, video profile, grooming and industry placement effort all require the production's time, manpower and cost. In the open market, these services separately would cost ₹40,000–₹60,000 or more — and even then, most agencies only offer "placement assistance," with no surety of actual work. The Crown Hunt is different: this fee is not just for services, it comes with a genuine surety of industry placement, not just an attempt.</p></details>
+    <details class="faq-item"><summary>Q27. What is the total programme fee?</summary><p>₹25,000 one-time Programme &amp; Production Fee for the Mr. &amp; Miss Haryana category.</p></details>
+    <details class="faq-item"><summary>Q28. How is the fee paid?</summary><p>In two parts — ₹5,000 as a token amount to confirm participation, and ₹20,000 as the balance amount payable at final enrolment when the Work Agreement is signed.</p></details>
+    <details class="faq-item"><summary>Q29. Are there any hidden or additional charges after ₹25,000?</summary><p>No. ₹25,000 is the complete one-time fee. No additional mandatory charges apply for the benefits covered in the Work Agreement.</p></details>
+    <details class="faq-item"><summary>Q30. What does the ₹5,000 token amount include?</summary><p>It includes ₹4,237 as the base amount plus ₹763 GST, and is collected to confirm and reserve participation.</p></details>
+    <details class="faq-item"><summary>Q31. Is the token amount refundable?</summary><p>Yes, subject to the applicable cancellation/refund terms communicated at the time of registration.</p></details>
+    <details class="faq-item"><summary>Q32. Will I get a receipt for my payment?</summary><p>Yes, a proper GST receipt is provided for the token amount, with the GST breakup clearly shown.</p></details>
+    <details class="faq-item"><summary>Q33. What happens to my refund if it becomes payable?</summary><p>It will be processed after applicable GST/tax adjustments and other legally permissible deductions, if any.</p></details>
+    <details class="faq-item"><summary>Q34. Are personal expenses like outfits covered in the fee?</summary><p>No. Personal outfits and basic personal appearance items are the contestant's own responsibility, unless separately agreed.</p></details>
+    <details class="faq-item"><summary>Q35. What about special requirements like extra travel, accommodation, or special costumes?</summary><p>These are outside the standard programme scope and will be communicated and discussed separately, wherever applicable.</p></details>
+    <details class="faq-item"><summary>Q36. Is the fee structure different for other categories (Kids, Mrs, Mr Above 35)?</summary><p>Yes, fee structure for other categories will be discussed separately after the audition and selection process.</p></details>
+    <details class="faq-item"><summary>Q37. Charges are too much, casting must be talent-based?</summary><p>Casting itself is fully talent-based — auditions are free, and no one is selected simply by paying. The fee applies only after selection, and it reflects the real cost of taking that talent to an industry-ready level. Consider this: 15–16 years of school and college, often costing ₹15–20 lakhs, still comes with no guarantee of career placement. That is where The Crown Hunt stands apart — offering a structured programme with an actual placement surety, not just a possibility.</p></details>
+
+    <div class="faq-category">Working With Others / Outside Opportunities</div>
+    <details class="faq-item"><summary>Q38. Can I work with other agencies or production houses?</summary><p>Yes, you are free to work with other agencies, production houses, brands, photographers or independent projects. The organisation does not claim ownership over your independent career.</p></details>
+    <details class="faq-item"><summary>Q39. Do I need to inform the organisation if I take outside work?</summary><p>Yes, prior notice is required for external commitments that may affect Crown Hunt projects or confirmed schedules.</p></details>
+    <details class="faq-item"><summary>Q40. What happens if my outside work date clashes with a confirmed Crown Hunt project?</summary><p>You must immediately inform the organisation. If the schedule cannot reasonably be adjusted and you're unavailable, the organisation is not liable to provide that project or a replacement after the agreement period. You may still be considered for future suitable opportunities.</p></details>
+    <details class="faq-item"><summary>Q41. Does signing the agreement create a permanent or exclusive relationship?</summary><p>No. The agreement does not create an employer-employee relationship, partnership or permanent employment. It also does not transfer your personal career rights — you remain free to build your independent career.</p></details>
+
+    <div class="faq-category">Conduct, Safety &amp; Confidentiality</div>
+    <details class="faq-item"><summary>Q42. What professional conduct is expected of me?</summary><p>Report on time, follow reasonable production directions, respect staff and crew, maintain professional communication, avoid abusive/disruptive behaviour, not damage production property, and follow safety and confidentiality guidelines.</p></details>
+    <details class="faq-item"><summary>Q43. What information must I keep confidential?</summary><p>Unreleased projects, scripts, casting decisions, production plans, budgets, shoot locations, unreleased photos/videos, and other internal or confidential business information.</p></details>
+    <details class="faq-item"><summary>Q44. What are the safety and consent protections?</summary><p>The organisation maintains reasonable safety guidelines. You cannot be forced into unlawful activities. Any special or sensitive performance requirement needs your appropriate consent communicated beforehand. You may raise genuine safety or consent concerns anytime.</p></details>
+    <details class="faq-item"><summary>Q45. What about personal relationships during the programme?</summary><p>The organisation does not interfere in lawful, consensual personal relationships. However, professional boundaries and anti-harassment/consent guidelines must be followed. Private consensual matters outside organisation activities are not the organisation's responsibility, unless safety or conduct rules are violated.</p></details>
+    <details class="faq-item"><summary>Q46. What happens in case of drugs, illegal activity or serious misconduct?</summary><p>This is strictly prohibited. The organisation may immediately suspend or remove a contestant, and may take legal action or report to authorities where necessary. No automatic refund or continuation of work applies in such cases.</p></details>
+    <details class="faq-item"><summary>Q47. What can lead to suspension or termination of my participation?</summary><p>Serious misconduct, repeated non-cooperation, material breach of agreement, confidentiality breach, repeated absence, safety violations, harassment, illegal activity, or conduct materially damaging to the organisation or production.</p></details>
+    <details class="faq-item"><summary>Q48. Can I request to leave the programme myself?</summary><p>Yes, by providing written notice to the organisation. Refund and outstanding obligations will be determined as per the agreement and applicable law.</p></details>
+
+    <div class="faq-category">Agreement Process</div>
+    <details class="faq-item"><summary>Q49. When will I see the full Work Agreement?</summary><p>You will be given the complete Work &amp; Industry Placement Agreement to review before paying the ₹20,000 balance and before final enrolment/signing.</p></details>
+    <details class="faq-item"><summary>Q50. Is the agreement physically signed?</summary><p>Yes, by both the contestant and the organisation.</p></details>
+    <details class="faq-item"><summary>Q51. How long does the agreement stay applicable?</summary><p>Until completion and delivery of the programme deliverables and fulfilment of applicable commitments, as per the agreement's terms.</p></details>
+    <details class="faq-item"><summary>Q52. What if there's a dispute?</summary><p>Both parties first attempt good-faith discussion. If unresolved, it will be handled as per applicable Indian law and competent courts/authorities.</p></details>
+
+    <div class="faq-category">Programme Credibility (Based on Independent Research)</div>
+    <details class="faq-item"><summary>Q53. Is the organiser genuine?</summary><p>Yes. Drey Parkour (DreyParkour MOVIEZ) has verifiable IMDb credits (e.g., Akhada, Videshi Bahu) and an active LinkedIn presence with real production work history.</p></details>
+    <details class="faq-item"><summary>Q54. Is there proof of actual production activity for Crown Hunt?</summary><p>Yes — DreyParkour MOVIEZ hired a Cinematographer Intern specifically for Crown Hunt tasks (audition shooting, contestant interviews, BTS, sponsor shoots, grooming week, finale, OTT-bound material), and Rohtak/Hisar auditions are documented with actual event photos.</p></details>
+    <details class="faq-item"><summary>Q55. Are there any pending items I should confirm before final payment?</summary><p>Yes — before paying the ₹20,000 balance, get written confirmation on: exact finale date and venue, final jury/panel, OTT/show distribution plan, and the full portfolio + video + training + placement timeline. Also read the final agreement version fully to ensure it matches written promises.</p></details>
+    <details class="faq-item"><summary>Q56. Is "100% Guaranteed Industry Placement" the same as a guaranteed lead role?</summary><p>No. It means every eligible finalist will be provided at least one suitable professional industry work opportunity, subject to fulfilling programme requirements. The exact role, project and commercial terms depend on suitability and project requirements — not a guaranteed lead role.</p></details>
+
+  </div>
+
+  <div id="faq-hi" style="display:none;">
+
+    <div class="faq-category">कार्यक्रम की बुनियादी जानकारी</div>
+    <details class="faq-item"><summary>Q1. द क्राउन हंट क्या है?</summary><p>द क्राउन हंट: मिस्टर एंड मिस हरियाणा 2026, DreyParkour MOVIEZ द्वारा प्रस्तुत हरियाणा का पेजेंट और इंडस्ट्री-प्लेसमेंट प्रोग्राम है, जो चुने गए प्रतियोगियों को प्रोफेशनल ट्रेनिंग, पोर्टफोलियो डेवलपमेंट और असली एंटरटेनमेंट इंडस्ट्री वर्क अवसर देता है — सिर्फ खिताब नहीं।</p></details>
+    <details class="faq-item"><summary>Q2. इसे कौन आयोजित कर रहा है?</summary><p>DreyParkour MOVIEZ, जिसके नेतृत्व में ड्रे पारकोर (एक्टर, डायरेक्टर, प्रोड्यूसर, वेरिफाइएबल इंडस्ट्री वर्क हिस्ट्री के साथ) हैं, क्राउन हंट प्रोग्राम के लिए प्रोडक्शन सपोर्ट के साथ।</p></details>
+    <details class="faq-item"><summary>Q3. सिलेक्शन प्रोसेस क्या है?</summary><p>रजिस्ट्रेशन → सिटी ऑडिशन → पर्सनल इंटरैक्शन/ज्यूरी राउंड → टॉप 50 मेल + टॉप 50 फीमेल फाइनलिस्ट → 5–7 दिन ग्रूमिंग → पोर्टफोलियो + वीडियो शूट → ग्रैंड फिनाले → इंडस्ट्री वर्क/प्लेसमेंट।</p></details>
+    <details class="faq-item"><summary>Q4. किन शहरों में ऑडिशन हो रहे हैं?</summary><p>रोहतक और हिसार के ऑडिशन पूरे हो चुके हैं। गुड़गांव, चंडीगढ़ और नोएडा के ऑडिशन फिलहाल होल्ड पर हैं।</p></details>
+    <details class="faq-item"><summary>Q5. ग्रैंड फिनाले कहां और कब है?</summary><p>गुड़गांव/चंडीगढ़ (वेन्यू सिटी की अंतिम पुष्टि होना बाकी है)।</p></details>
+    <details class="faq-item"><summary>Q6. क्या रजिस्ट्रेशन फ्री है?</summary><p>हां, शुरुआती ऑडिशन रजिस्ट्रेशन फ्री है। प्रोग्राम फीस सिर्फ सिलेक्शन के बाद, एनरोलमेंट स्टेज पर लागू होती है।</p></details>
+    <details class="faq-item"><summary>Q7. चीफ ज्यूरी और अन्य ज्यूरी मेंबर्स कौन तय करता है?</summary><p>चीफ ज्यूरी पैनल फाइनल किया जा रहा है और फिनाले के करीब इसकी घोषणा की जाएगी।</p></details>
+
+    <div class="faq-category">प्रोग्राम के लाभ</div>
+    <details class="faq-item"><summary>Q8. एक प्रतियोगी के तौर पर मुझे इवेंट से क्या फायदा मिलेगा?</summary><p>प्रोफेशनल पोर्टफोलियो शूट, प्रोफेशनल वीडियो प्रोफाइल, एक्टिंग और मॉडलिंग ट्रेनिंग, पर्सनालिटी डेवलपमेंट और ग्रूमिंग, इंडस्ट्री वर्क और प्लेसमेंट अवसर, ऑडिशन/कास्टिंग एक्सपोज़र, IMDb फैसिलिटेशन के साथ प्रोफेशनल वर्क क्रेडिट, और फिनाले के बाद मैगज़ीन फीचर। यह सिर्फ खिताब वाला पेजेंट नहीं बल्कि एक करियर-एंट्री पैकेज है।</p></details>
+    <details class="faq-item"><summary>Q9. प्रोफेशनल पोर्टफोलियो शूट में क्या मिलेगा?</summary><p>इनडोर और आउटडोर प्रोफेशनल शूट, 10–15 एडिटेड फोटोग्राफ्स (परफॉर्मेंस और स्टैंडर्ड के अनुसार 20 तक भी संभव), बाकी फोटोग्राफ्स रॉ फॉर्मेट में।</p></details>
+    <details class="faq-item"><summary>Q10. क्या शूट के लिए अपने खुद के आउटफिट लाने होंगे?</summary><p>हां, जब तक अलग से तय न हो, अपने सूटेबल पर्सनल आउटफिट लाना आपकी जिम्मेदारी है। ऑर्गनाइजेशन सही कलर, स्टाइल और लुक पर गाइड कर सकता है।</p></details>
+    <details class="faq-item"><summary>Q11. वीडियो प्रोफाइल किसलिए है?</summary><p>यह एक प्रोफेशनल वीडियो प्रोफाइल है जो ऑडिशन, कास्टिंग कॉल्स और इंडस्ट्री इंट्रोडक्शन के लिए है — पर्सनल बायोग्राफी वीडियो नहीं।</p></details>
+    <details class="faq-item"><summary>Q12. कौन सी ट्रेनिंग मिलेगी?</summary><p>एक्टिंग (एक्सप्रेशन, डायलॉग डिलीवरी, कैमरा फेसिंग, कैरेक्टर वर्क), मॉडलिंग (रैंप वॉक, पोजिंग, कैमरा एंगल्स), पर्सनालिटी डेवलपमेंट, कम्युनिकेशन, इंटरव्यू स्किल्स और प्रोफेशनल ग्रूमिंग की प्रोफेशनल ट्रेनिंग।</p></details>
+    <details class="faq-item"><summary>Q13. क्या ट्रेनिंग और शूट अटेंड करना जरूरी है?</summary><p>हां, शेड्यूल्ड प्रोग्राम एक्टिविटीज़ में एक्टिव पार्टिसिपेशन जरूरी है। बिना वैलिड कारण बार-बार अनुपस्थिति भविष्य के वर्क अवसरों की एलिजिबिलिटी पर असर डाल सकती है।</p></details>
+    <details class="faq-item"><summary>Q14. क्या मुझे इंडस्ट्री वर्क पक्का मिलेगा?</summary><p>ऑर्गनाइजेशन आपकी टैलेंट, रुचि, सूटेबिलिटी, अवेलेबिलिटी, प्रोजेक्ट रिक्वायरमेंट और ऑन-सेट व्यवहार के आधार पर, अपने खुद के प्रोजेक्ट्स और नेटवर्क के जरिए कम से कम एक सूटेबल प्रोफेशनल इंडस्ट्री वर्क अवसर देने के लिए प्रतिबद्ध है।</p></details>
+    <details class="faq-item"><summary>Q15. किस तरह के वर्क अवसरों के लिए विचार किया जा सकता है?</summary><p>एक्टिंग प्रोजेक्ट्स, म्यूज़िक वीडियोज़, मॉडलिंग असाइनमेंट्स, प्रमोशनल प्रोजेक्ट्स, वेब/शॉर्ट-फॉर्म कंटेंट, असिस्टेंट डायरेक्टर (AD) वर्क, प्रोडक्शन-संबंधित असाइनमेंट्स, और अन्य सूटेबल एंटरटेनमेंट-इंडस्ट्री अवसर।</p></details>
+    <details class="faq-item"><summary>Q16. क्या लीड रोल या कोई खास प्रोजेक्ट गारंटीड है?</summary><p>इस इवेंट के प्लेसमेंट प्रोजेक्ट्स में मुख्य कोशिश प्रतियोगियों को लीड, सेमी-लीड या पैरेलल-पोटेंशियल ऑन-कैमरा रोल्स में रखने की रहेगी, ताकि अधिकतम एक्सपोज़र मिले। इसके अलावा, कोई खास स्क्रिप्ट, कैरेक्टर, सेलिब्रिटी पेयरिंग, फिक्स्ड प्रोजेक्ट्स की संख्या, शूट लोकेशन या पारिश्रमिक जैसी डिमांड्स अभी कमिट नहीं की जा सकतीं, जब तक अलग से लिखित रूप में कन्फर्म न हों।</p></details>
+    <details class="faq-item"><summary>Q17. मुझे कौन सा रोल या प्रोजेक्ट मिलेगा, यह कौन तय करता है?</summary><p>कास्टिंग, रोल एलोकेशन और प्रोजेक्ट सूटेबिलिटी पर अंतिम प्रोफेशनल निर्णय ऑर्गनाइजेशन का होता है, जो असली कास्टिंग और प्रोडक्शन कारणों के आधार पर लिया जाता है।</p></details>
+    <details class="faq-item"><summary>Q18. प्लेसमेंट मिलने में कितना समय लगेगा?</summary><p>ऑर्गनाइजेशन प्रोग्राम डिलिवरेबल्स और वर्क अवसर पूरे करने के लिए अधिकतम लगभग 6–12 महीने का लक्ष्य रखता है।</p></details>
+    <details class="faq-item"><summary>Q19. अगर मैं किसी खास प्रोजेक्ट के लिए सूटेबल नहीं हूं तो?</summary><p>ऐसे में ऑर्गनाइजेशन उस प्रोजेक्ट के लिए किसी अन्य सूटेबल प्रतियोगी को चुन सकता है।</p></details>
+    <details class="faq-item"><summary>Q20. क्या मुझे ऑडिशन/कास्टिंग एक्सपोज़र मिलेगा?</summary><p>हां, फाइनलिस्ट्स को प्रोग्राम पीरियड के दौरान क्राउन हंट के इंडस्ट्री नेटवर्क के जरिए संबंधित ऑडिशन और कास्टिंग अवसरों तक पहुंच मिलती है।</p></details>
+    <details class="faq-item"><summary>Q21. क्या प्रोजेक्ट्स पोस्टपोन, डिले या कैंसल हो सकते हैं?</summary><p>हां, क्रिएटिव, टेक्निकल, फाइनेंशियल, लोकेशन, आर्टिस्ट अवेलेबिलिटी, क्लाइंट रिक्वायरमेंट या अन्य प्रोडक्शन कारणों से ऐसा हो सकता है। ऐसे में ऑर्गनाइजेशन आपको दूसरे सूटेबल अवसरों के लिए विचार करने की पूरी कोशिश करेगा।</p></details>
+    <details class="faq-item"><summary>Q22. क्या मुझे प्रोफेशनल वर्क क्रेडिट मिलेगा?</summary><p>हां, अगर किसी एलिजिबल एक्टिंग-बेस्ड प्रोजेक्ट के लिए चुना जाता है, तो उचित प्रोफेशनल वर्क क्रेडिट दिया जाएगा।</p></details>
+    <details class="faq-item"><summary>Q23. क्या IMDb क्रेडिट गारंटीड है?</summary><p>नहीं। IMDb लिस्टिंग/क्रेडिट एलिजिबल रिलीज़्ड प्रोजेक्ट्स के लिए फैसिलिटेट किया जाएगा, लेकिन यह IMDb की अपनी गाइडलाइंस, वेरिफिकेशन और स्वतंत्र अप्रूवल पर निर्भर है — इसकी गारंटी नहीं दी जा सकती।</p></details>
+    <details class="faq-item"><summary>Q24. क्या मुझे मैगज़ीन फीचर मिलेगा?</summary><p>हां, हर फाइनलिस्ट को ग्रैंड फिनाले के बाद क्राउन हंट से जुड़े तय प्रिंट मैगज़ीन/पब्लिकेशन में एक डेडिकेटेड इंटरव्यू और फोटोग्राफ फीचर मिलेगा।</p></details>
+    <details class="faq-item"><summary>Q25. क्या मेरी फोटो/वीडियो प्रमोशन के लिए इस्तेमाल हो सकते हैं?</summary><p>हां, ऑर्गनाइजेशन प्रोग्राम की फोटोग्राफ्स और वीडियोज़ को क्राउन हंट के प्रमोशन, कास्टिंग, सोशल मीडिया, वेबसाइट और प्रेस के वैध उद्देश्यों के लिए इस्तेमाल कर सकता है।</p></details>
+
+    <div class="faq-category">फीस और भुगतान</div>
+    <details class="faq-item"><summary>Q26. मुझे फीस क्यों देनी चाहिए?</summary><p>इस स्केल का कोई भी काम फ्री में नहीं बनता — ट्रेनिंग, प्रोफेशनल पोर्टफोलियो, वीडियो प्रोफाइल, ग्रूमिंग और इंडस्ट्री प्लेसमेंट की कोशिश में प्रोडक्शन का समय, मैनपावर और लागत लगती है। ओपन मार्केट में ये सर्विसेज अलग-अलग लेने पर ₹40,000–₹60,000 या उससे ज्यादा खर्च होते हैं — और तब भी ज्यादातर एजेंसियां सिर्फ "प्लेसमेंट असिस्टेंस" देती हैं, असली काम की कोई निश्चितता नहीं होती। क्राउन हंट अलग है: यह फीस सिर्फ सर्विसेज के लिए नहीं, बल्कि इंडस्ट्री प्लेसमेंट की असली निश्चितता के साथ आती है, सिर्फ कोशिश नहीं।</p></details>
+    <details class="faq-item"><summary>Q27. टोटल प्रोग्राम फीस कितनी है?</summary><p>मिस्टर एंड मिस हरियाणा कैटेगरी के लिए ₹25,000 वन-टाइम प्रोग्राम एंड प्रोडक्शन फीस।</p></details>
+    <details class="faq-item"><summary>Q28. फीस कैसे दी जाती है?</summary><p>दो हिस्सों में — ₹5,000 टोकन अमाउंट पार्टिसिपेशन कन्फर्म करने के लिए, और ₹20,000 बैलेंस अमाउंट फाइनल एनरोलमेंट पर, जब वर्क एग्रीमेंट साइन होता है।</p></details>
+    <details class="faq-item"><summary>Q29. ₹25,000 के बाद कोई हिडन या एक्स्ट्रा चार्ज है?</summary><p>नहीं। ₹25,000 पूरी वन-टाइम फीस है। वर्क एग्रीमेंट में शामिल बेनिफिट्स के लिए कोई और मैंडेटरी चार्ज लागू नहीं होता।</p></details>
+    <details class="faq-item"><summary>Q30. ₹5,000 टोकन अमाउंट में क्या शामिल है?</summary><p>इसमें ₹4,237 बेस अमाउंट प्लस ₹763 GST शामिल है, और यह पार्टिसिपेशन कन्फर्म व रिजर्व करने के लिए लिया जाता है।</p></details>
+    <details class="faq-item"><summary>Q31. क्या टोकन अमाउंट रिफंडेबल है?</summary><p>हां, रजिस्ट्रेशन के समय बताए गए लागू कैंसिलेशन/रिफंड टर्म्स के अनुसार।</p></details>
+    <details class="faq-item"><summary>Q32. क्या पेमेंट की रसीद मिलेगी?</summary><p>हां, टोकन अमाउंट के लिए एक उचित GST रसीद दी जाती है, जिसमें GST ब्रेकअप साफ दिखाया जाता है।</p></details>
+    <details class="faq-item"><summary>Q33. अगर रिफंड बनता है तो क्या होगा?</summary><p>यह लागू GST/टैक्स एडजस्टमेंट और अन्य कानूनी रूप से मान्य कटौतियों (अगर कोई हों) के बाद प्रोसेस किया जाएगा।</p></details>
+    <details class="faq-item"><summary>Q34. क्या आउटफिट जैसे पर्सनल खर्चे फीस में शामिल हैं?</summary><p>नहीं। पर्सनल आउटफिट्स और बेसिक पर्सनल अपीयरेंस आइटम्स, जब तक अलग से तय न हो, प्रतियोगी की अपनी जिम्मेदारी हैं।</p></details>
+    <details class="faq-item"><summary>Q35. एक्स्ट्रा ट्रैवल, एकोमोडेशन या स्पेशल कॉस्ट्यूम जैसी खास जरूरतों का क्या?</summary><p>ये स्टैंडर्ड प्रोग्राम स्कोप से बाहर हैं और जहां भी लागू हो, अलग से बताई और डिस्कस की जाएंगी।</p></details>
+    <details class="faq-item"><summary>Q36. क्या अन्य कैटेगरी (किड्स, मिसेज, मिस्टर अबव 35) के लिए फीस स्ट्रक्चर अलग है?</summary><p>हां, अन्य कैटेगरी के लिए फीस स्ट्रक्चर ऑडिशन और सिलेक्शन प्रोसेस के बाद अलग से डिस्कस किया जाएगा।</p></details>
+    <details class="faq-item"><summary>Q37. चार्जेज़ बहुत ज्यादा हैं, कास्टिंग टैलेंट-बेस्ड होनी चाहिए?</summary><p>कास्टिंग पूरी तरह टैलेंट-बेस्ड है — ऑडिशन फ्री हैं, और सिर्फ पैसे देकर कोई सिलेक्ट नहीं होता। फीस सिलेक्शन के बाद ही लागू होती है, और यह उस टैलेंट को इंडस्ट्री-रेडी लेवल तक ले जाने की असली लागत दर्शाती है। सोचिए: 15–16 साल की स्कूल-कॉलेज पढ़ाई, जिसमें अक्सर ₹15–20 लाख खर्च होते हैं, फिर भी करियर प्लेसमेंट की कोई गारंटी नहीं देती। यहीं क्राउन हंट अलग खड़ा होता है — एक स्ट्रक्चर्ड प्रोग्राम जिसमें असली प्लेसमेंट की निश्चितता है, सिर्फ संभावना नहीं।</p></details>
+
+    <div class="faq-category">अन्य के साथ काम करना / बाहरी अवसर</div>
+    <details class="faq-item"><summary>Q38. क्या मैं दूसरी एजेंसियों या प्रोडक्शन हाउस के साथ काम कर सकता/सकती हूं?</summary><p>हां, आप दूसरी एजेंसियों, प्रोडक्शन हाउस, ब्रांड्स, फोटोग्राफर्स या इंडिपेंडेंट प्रोजेक्ट्स के साथ काम करने के लिए स्वतंत्र हैं। ऑर्गनाइजेशन आपके इंडिपेंडेंट करियर पर मालिकाना हक का दावा नहीं करता।</p></details>
+    <details class="faq-item"><summary>Q39. अगर मैं बाहर काम लूं तो क्या ऑर्गनाइजेशन को बताना जरूरी है?</summary><p>हां, ऐसे बाहरी कमिटमेंट्स के लिए पहले से सूचना जरूरी है जो क्राउन हंट प्रोजेक्ट्स या कन्फर्म शेड्यूल्स को प्रभावित कर सकते हों।</p></details>
+    <details class="faq-item"><summary>Q40. अगर मेरी बाहरी वर्क डेट किसी कन्फर्म क्राउन हंट प्रोजेक्ट से टकराए तो?</summary><p>आपको तुरंत ऑर्गनाइजेशन को सूचित करना होगा। अगर शेड्यूल एडजस्ट नहीं हो पाता और आप उपलब्ध नहीं हैं, तो एग्रीमेंट पीरियड के बाद ऑर्गनाइजेशन उस प्रोजेक्ट या उसके रिप्लेसमेंट के लिए जवाबदेह नहीं है। भविष्य के सूटेबल अवसरों के लिए फिर भी विचार किया जा सकता है।</p></details>
+    <details class="faq-item"><summary>Q41. क्या एग्रीमेंट साइन करने से कोई परमानेंट या एक्सक्लूसिव रिलेशनशिप बनती है?</summary><p>नहीं। यह एग्रीमेंट एंप्लॉयर-एंप्लॉयी रिलेशनशिप, पार्टनरशिप या परमानेंट एंप्लॉयमेंट नहीं बनाता। यह आपके पर्सनल करियर राइट्स को भी ट्रांसफर नहीं करता — आप अपना इंडिपेंडेंट करियर बनाने के लिए स्वतंत्र रहते हैं।</p></details>
+
+    <div class="faq-category">आचरण, सुरक्षा और गोपनीयता</div>
+    <details class="faq-item"><summary>Q42. मुझसे कैसा प्रोफेशनल आचरण अपेक्षित है?</summary><p>समय पर पहुंचना, प्रोडक्शन की उचित हिदायतों का पालन करना, स्टाफ और क्रू का सम्मान करना, प्रोफेशनल कम्युनिकेशन बनाए रखना, अभद्र/विघ्नकारी व्यवहार से बचना, प्रोडक्शन प्रॉपर्टी को नुकसान न पहुंचाना, और सुरक्षा व गोपनीयता गाइडलाइंस का पालन करना।</p></details>
+    <details class="faq-item"><summary>Q43. मुझे कौन सी जानकारी गोपनीय रखनी होगी?</summary><p>अनरिलीज़्ड प्रोजेक्ट्स, स्क्रिप्ट्स, कास्टिंग निर्णय, प्रोडक्शन प्लान्स, बजट, शूट लोकेशन्स, अनरिलीज़्ड फोटोज़/वीडियोज़, और अन्य इंटरनल या गोपनीय बिजनेस जानकारी।</p></details>
+    <details class="faq-item"><summary>Q44. सुरक्षा और सहमति (कंसेंट) को लेकर क्या प्रोटेक्शन हैं?</summary><p>ऑर्गनाइजेशन उचित सुरक्षा गाइडलाइंस बनाए रखता है। आपको किसी भी गैरकानूनी गतिविधि के लिए मजबूर नहीं किया जा सकता। किसी भी खास या संवेदनशील परफॉर्मेंस रिक्वायरमेंट के लिए पहले से आपकी उचित सहमति ली जाएगी। आप किसी भी समय असली सुरक्षा या सहमति संबंधी चिंता उठा सकते हैं।</p></details>
+    <details class="faq-item"><summary>Q45. प्रोग्राम के दौरान पर्सनल रिलेशनशिप को लेकर क्या नियम है?</summary><p>ऑर्गनाइजेशन किसी भी कानूनी, आपसी सहमति वाली पर्सनल रिलेशनशिप में दखल नहीं देता। हालांकि, प्रोफेशनल सीमाएं और एंटी-हैरेसमेंट/कंसेंट गाइडलाइंस का पालन जरूरी है। ऑर्गनाइजेशन एक्टिविटीज़ से बाहर के प्राइवेट, आपसी सहमति वाले मामले ऑर्गनाइजेशन की जिम्मेदारी नहीं हैं, जब तक सुरक्षा या आचरण नियमों का उल्लंघन न हो।</p></details>
+    <details class="faq-item"><summary>Q46. ड्रग्स, गैरकानूनी गतिविधि या गंभीर दुर्व्यवहार की स्थिति में क्या होगा?</summary><p>यह सख्ती से प्रतिबंधित है। ऑर्गनाइजेशन किसी प्रतियोगी को तुरंत सस्पेंड या हटा सकता है, और जरूरत पड़ने पर कानूनी कार्रवाई या अथॉरिटीज को रिपोर्ट कर सकता है। ऐसे मामलों में कोई ऑटोमैटिक रिफंड या काम जारी रहने की गारंटी नहीं होती।</p></details>
+    <details class="faq-item"><summary>Q47. मेरी पार्टिसिपेशन सस्पेंड या टर्मिनेट होने की वजह क्या हो सकती है?</summary><p>गंभीर दुर्व्यवहार, बार-बार असहयोग, एग्रीमेंट का गंभीर उल्लंघन, गोपनीयता भंग, बार-बार अनुपस्थिति, सुरक्षा उल्लंघन, हैरेसमेंट, गैरकानूनी गतिविधि, या ऑर्गनाइजेशन/प्रोडक्शन को गंभीर नुकसान पहुंचाने वाला आचरण।</p></details>
+    <details class="faq-item"><summary>Q48. क्या मैं खुद प्रोग्राम छोड़ने का अनुरोध कर सकता/सकती हूं?</summary><p>हां, ऑर्गनाइजेशन को लिखित सूचना देकर। रिफंड और बाकी दायित्व एग्रीमेंट और लागू कानून के अनुसार तय होंगे।</p></details>
+
+    <div class="faq-category">एग्रीमेंट प्रक्रिया</div>
+    <details class="faq-item"><summary>Q49. पूरा वर्क एग्रीमेंट मुझे कब दिखेगा?</summary><p>₹20,000 बैलेंस भरने और फाइनल एनरोलमेंट/साइनिंग से पहले आपको पूरा वर्क एंड इंडस्ट्री प्लेसमेंट एग्रीमेंट रिव्यू के लिए दिया जाएगा।</p></details>
+    <details class="faq-item"><summary>Q50. क्या एग्रीमेंट फिजिकली साइन होता है?</summary><p>हां, प्रतियोगी और ऑर्गनाइजेशन दोनों द्वारा।</p></details>
+    <details class="faq-item"><summary>Q51. एग्रीमेंट कब तक लागू रहता है?</summary><p>जब तक एग्रीमेंट की शर्तों के अनुसार प्रोग्राम डिलिवरेबल्स पूरे न हो जाएं और लागू कमिटमेंट्स पूरे न हो जाएं।</p></details>
+    <details class="faq-item"><summary>Q52. अगर कोई विवाद हो तो?</summary><p>दोनों पक्ष पहले अच्छी नीयत से बातचीत करेंगे। अगर हल न निकले, तो यह लागू भारतीय कानून और सक्षम कोर्ट/अथॉरिटीज के अनुसार हैंडल किया जाएगा।</p></details>
+
+    <div class="faq-category">प्रोग्राम की विश्वसनीयता (स्वतंत्र रिसर्च पर आधारित)</div>
+    <details class="faq-item"><summary>Q53. क्या ऑर्गनाइज़र असली हैं?</summary><p>हां। ड्रे पारकोर (DreyParkour MOVIEZ) के पास वेरिफिएबल IMDb क्रेडिट्स हैं (जैसे अखाड़ा, विदेशी बहू) और एक्टिव लिंक्डइन प्रेजेंस के साथ असली प्रोडक्शन वर्क हिस्ट्री है।</p></details>
+    <details class="faq-item"><summary>Q54. क्या क्राउन हंट के लिए असली प्रोडक्शन एक्टिविटी का कोई सबूत है?</summary><p>हां — DreyParkour MOVIEZ ने क्राउन हंट के कामों (ऑडिशन शूटिंग, प्रतियोगियों के इंटरव्यू, BTS, स्पॉन्सर शूट्स, ग्रूमिंग वीक, फिनाले, OTT-बाउंड मटेरियल) के लिए खासतौर पर एक सिनेमैटोग्राफर इंटर्न रखा है, और रोहतक/हिसार ऑडिशन असली इवेंट फोटोज़ के साथ डॉक्यूमेंटेड हैं।</p></details>
+    <details class="faq-item"><summary>Q55. फाइनल पेमेंट से पहले मुझे किन चीजों की पुष्टि कर लेनी चाहिए?</summary><p>हां — ₹20,000 बैलेंस देने से पहले इन पर लिखित पुष्टि लें: फिनाले की सही तारीख और वेन्यू, फाइनल ज्यूरी/पैनल, OTT/शो डिस्ट्रीब्यूशन प्लान, और पूरा पोर्टफोलियो + वीडियो + ट्रेनिंग + प्लेसमेंट टाइमलाइन। साथ ही फाइनल एग्रीमेंट पूरा पढ़ें ताकि यह लिखित वादों से मेल खाए।</p></details>
+    <details class="faq-item"><summary>Q56. क्या "100% गारंटीड इंडस्ट्री प्लेसमेंट" का मतलब गारंटीड लीड रोल है?</summary><p>नहीं। इसका मतलब है कि हर एलिजिबल फाइनलिस्ट को प्रोग्राम रिक्वायरमेंट्स पूरी करने पर कम से कम एक सूटेबल प्रोफेशनल इंडस्ट्री वर्क अवसर दिया जाएगा। सही रोल, प्रोजेक्ट और कमर्शियल शर्तें सूटेबिलिटी और प्रोजेक्ट रिक्वायरमेंट पर निर्भर करती हैं — गारंटीड लीड रोल नहीं।</p></details>
+
+  </div>
+
+</section>
+
+<footer>
+  <div class="footer-grid">
+    <div>
+      <h4>QUICK LINKS</h4>
+      <a href="index.html#top">Home</a>
+      <a href="index.html#about">About</a>
+      <a href="index.html#register">Register</a>
+    </div>
+    <div>
+      <h4>GET IN TOUCH</h4>
+      <a href="https://wa.me/918395966960" target="_blank" style="display:flex;align-items:center;gap:8px;"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.28-1.39a9.9 9.9 0 004.76 1.21h.01c5.46 0 9.9-4.45 9.9-9.91C21.96 6.45 17.5 2 12.04 2zm5.8 14.09c-.24.68-1.4 1.3-1.93 1.38-.49.08-1.11.11-1.79-.11-.41-.13-.94-.3-1.62-.59-2.85-1.23-4.71-4.1-4.85-4.29-.14-.19-1.16-1.54-1.16-2.94s.73-2.09 1-2.38c.26-.28.57-.35.76-.35s.38 0 .55.01c.18.01.41-.07.64.49.24.57.81 1.98.88 2.12.07.14.12.31.02.5-.09.19-.14.3-.28.46-.14.16-.29.36-.42.48-.14.14-.28.28-.12.56.16.28.71 1.17 1.53 1.9 1.05.94 1.94 1.23 2.22 1.37.28.14.44.12.6-.07.16-.19.68-.79.87-1.06.18-.28.36-.23.61-.14.24.09 1.55.73 1.82.86.26.14.44.2.5.31.06.12.06.68-.18 1.36z"/></svg>+91-83959-66960</a>
+      <a href="mailto:info.thecrownhunt@gmail.com">✉️ info.thecrownhunt@gmail.com</a>
+    </div>
+    <div>
+      <h4>SOCIAL LINKS</h4>
+      <a href="https://www.instagram.com/thecrownhunt.in?igsh=dXZ6cXhkNzh3eDE2" target="_blank" style="display:flex;align-items:center;gap:8px;"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 2c2.7 0 3.1 0 4.1.1 1.1 0 1.8.2 2.5.5.7.3 1.2.6 1.8 1.2.6.6.9 1.1 1.2 1.8.3.7.5 1.4.5 2.5.1 1 .1 1.4.1 4.1s0 3.1-.1 4.1c0 1.1-.2 1.8-.5 2.5-.3.7-.6 1.2-1.2 1.8-.6.6-1.1.9-1.8 1.2-.7.3-1.4.5-2.5.5-1 .1-1.4.1-4.1.1s-3.1 0-4.1-.1c-1.1 0-1.8-.2-2.5-.5-.7-.3-1.2-.6-1.8-1.2-.6-.6-.9-1.1-1.2-1.8-.3-.7-.5-1.4-.5-2.5-.1-1-.1-1.4-.1-4.1s0-3.1.1-4.1c0-1.1.2-1.8.5-2.5.3-.7.6-1.2 1.2-1.8.6-.6 1.1-.9 1.8-1.2.7-.3 1.4-.5 2.5-.5 1-.1 1.4-.1 4.1-.1m0-2C9.2 0 8.8 0 7.7.1c-1 .1-2 .3-2.8.6-.8.3-1.5.8-2.1 1.4-.6.6-1.1 1.3-1.4 2.1-.3.8-.5 1.8-.6 2.8C.1 8.2 0 8.6 0 12s0 3.8.1 4.9c.1 1 .3 2 .6 2.8.3.8.8 1.5 1.4 2.1.6.6 1.3 1.1 2.1 1.4.8.3 1.8.5 2.8.6 1.1.1 1.5.1 4.9.1s3.8 0 4.9-.1c1-.1 2-.3 2.8-.6.8-.3 1.5-.8 2.1-1.4.6-.6 1.1-1.3 1.4-2.1.3-.8.5-1.8.6-2.8.1-1.1.1-1.5.1-4.9s0-3.8-.1-4.9c-.1-1-.3-2-.6-2.8-.3-.8-.8-1.5-1.4-2.1-.6-.6-1.3-1.1-2.1-1.4-.8-.3-1.8-.5-2.8-.6-1.1-.1-1.5-.1-4.9-.1z"/><circle cx="12" cy="12" r="3.5"/><circle cx="18.5" cy="5.5" r="1.3"/></svg>Instagram</a>
+      <a href="https://whatsapp.com/channel/0029VbCnXVIDp2QELffp0f2H" target="_blank" style="display:flex;align-items:center;gap:8px;"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.28-1.39a9.9 9.9 0 004.76 1.21h.01c5.46 0 9.9-4.45 9.9-9.91C21.96 6.45 17.5 2 12.04 2zm5.8 14.09c-.24.68-1.4 1.3-1.93 1.38-.49.08-1.11.11-1.79-.11-.41-.13-.94-.3-1.62-.59-2.85-1.23-4.71-4.1-4.85-4.29-.14-.19-1.16-1.54-1.16-2.94s.73-2.09 1-2.38c.26-.28.57-.35.76-.35s.38 0 .55.01c.18.01.41-.07.64.49.24.57.81 1.98.88 2.12.07.14.12.31.02.5-.09.19-.14.3-.28.46-.14.16-.29.36-.42.48-.14.14-.28.28-.12.56.16.28.71 1.17 1.53 1.9 1.05.94 1.94 1.23 2.22 1.37.28.14.44.2.5.31.06.12.06.68-.18 1.36z"/></svg>WA Channel</a>
+    </div>
+  </div>
+  <div class="copyright">!! जय श्री श्याम !!<br>© 2026, DreyParkour Moviez | GSTIN: 06DMLPK3065B1Z9 | Udyam: UDYAM-HR-22-0001368</div>
+</footer>
+
+<a href="index.html#top" class="scroll-top">↑</a>
+
+<script>
+  function showLang(lang){
+    document.getElementById('faq-en').style.display = (lang === 'en') ? 'block' : 'none';
+    document.getElementById('faq-hi').style.display = (lang === 'hi') ? 'block' : 'none';
+    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+    document.getElementById('btn-hi').classList.toggle('active', lang === 'hi');
+  }
+</script>
+</body>
+</html>
